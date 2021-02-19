@@ -4,13 +4,13 @@ enum class Enum {
     ENTRY_WITH_CLASS {
         inner class TestInner
 
-        class TestNested
+        <!NESTED_CLASS_NOT_ALLOWED!>class TestNested<!>
 
-        interface TestInterface
+        <!NESTED_CLASS_NOT_ALLOWED!>interface TestInterface<!>
 
         object TestObject
 
-        enum class TestEnumClass {
+        <!NESTED_CLASS_NOT_ALLOWED!>enum class TestEnumClass<!> {
             OTHER_ENTRY
         }
 
