@@ -10,7 +10,7 @@ fun foo() {
         enum class B {}
     }
     class C {
-        <!NESTED_CLASS_NOT_ALLOWED!>enum class D<!> {}
+        enum class D {}
     }
     val f = {
         enum class E {}

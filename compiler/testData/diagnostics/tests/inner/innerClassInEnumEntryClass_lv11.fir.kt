@@ -8,7 +8,7 @@ enum class Enum {
 
         <!NESTED_CLASS_NOT_ALLOWED!>interface TestInterface<!>
 
-        object TestObject
+        <!NESTED_CLASS_NOT_ALLOWED!>object TestObject<!>
 
         <!NESTED_CLASS_NOT_ALLOWED!>enum class TestEnumClass<!> {
             OTHER_ENTRY
