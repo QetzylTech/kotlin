@@ -26,7 +26,7 @@ object FirTopLevelPropertyChecker : FirFileChecker() {
         if (source.kind is FirFakeSourceElementKind) return
         val modifierList = with(FirModifierList) { source.getModifierList() }
 
-        checkPropertyInitializer(null, property, reporter, context)
+        checkPropertyInitializer(null, property, property.initializer != null, reporter, context)
         checkExpectDeclarationVisibilityAndBody(property, source, modifierList, reporter, context)
     }
 }

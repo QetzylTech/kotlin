@@ -16,13 +16,19 @@ abstract class EventOccurrencesRangeInfo<E : EventOccurrencesRangeInfo<E, K>, K 
     map: PersistentMap<K, EventOccurrencesRange> = persistentMapOf()
 ) : ControlFlowInfo<E, K, EventOccurrencesRange>(map) {
 
-    override fun merge(other: E): E {
+    override fun merge(other: E): E =
+        operation(other, EventOccurrencesRange::or)
+
+    fun plus(other: E): E =
+        operation(other, EventOccurrencesRange::plus)
+
+    private inline fun operation(other: E, op: (EventOccurrencesRange, EventOccurrencesRange) -> EventOccurrencesRange): E {
         @Suppress("UNCHECKED_CAST")
         var result = this as E
         for (symbol in keys.union(other.keys)) {
             val kind1 = this[symbol] ?: EventOccurrencesRange.ZERO
             val kind2 = other[symbol] ?: EventOccurrencesRange.ZERO
-            result = result.put(symbol, kind1 or kind2)
+            result = result.put(symbol, op.invoke(kind1, kind2))
         }
         return result
     }

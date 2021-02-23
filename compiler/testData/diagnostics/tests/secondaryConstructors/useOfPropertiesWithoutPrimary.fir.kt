@@ -9,7 +9,7 @@ class A {
 
     val useInitialized = useUnitialized + v
 
-    val uninitialized: Int
+    <!MUST_BE_INITIALIZED_OR_BE_ABSTRACT!>val uninitialized: Int<!>
 
     constructor() {
         x = 1
