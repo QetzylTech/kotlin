@@ -22,10 +22,7 @@ import org.jetbrains.kotlin.fir.resolve.symbolProvider
 import org.jetbrains.kotlin.fir.resolve.toSymbol
 import org.jetbrains.kotlin.fir.symbols.AbstractFirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.ConeClassLikeLookupTagImpl
-import org.jetbrains.kotlin.fir.types.ConeLookupTagBasedType
-import org.jetbrains.kotlin.fir.types.FirErrorTypeRef
-import org.jetbrains.kotlin.fir.types.FirResolvedTypeRef
-import org.jetbrains.kotlin.fir.types.classId
+import org.jetbrains.kotlin.fir.types.*
 import org.jetbrains.kotlin.idea.fir.getCandidateSymbols
 import org.jetbrains.kotlin.idea.fir.isImplicitFunctionCall
 import org.jetbrains.kotlin.idea.fir.low.level.api.api.getOrBuildFir
@@ -174,8 +171,33 @@ internal object FirReferenceResolveHelper {
             is FirVariableAssignment -> getSymbolsByVariableAssignment(fir, session, symbolBuilder)
             is FirResolvable -> getSymbolsByResolvable(fir, expression, session, symbolBuilder)
             is FirNamedArgumentExpression -> getSymbolsByNameArgumentExpression(expression, analysisSession, symbolBuilder)
+            is FirValueParameter -> getSymbolForVarargParameterType(fir, session, symbolBuilder)
+                ?: handleUnknownFirElement(expression, analysisSession, session, symbolBuilder)
             else -> handleUnknownFirElement(expression, analysisSession, session, symbolBuilder)
         }
+    }
+
+    /**
+     * For a vararg parameter, the corresponding FirElement has a fake source kind
+     * [org.jetbrains.kotlin.fir.FirFakeSourceElementKind.ArrayTypeFromVarargParameter]. In this case, [getOrBuildFir] returns the parent
+     * [FirValueParameter] for the parameter type reference KtElement. Therefore, we need this special handling.
+     */
+    private fun getSymbolForVarargParameterType(
+        fir: FirValueParameter,
+        session: FirSession,
+        symbolBuilder: KtSymbolByFirBuilder
+    ): Collection<KtSymbol>? {
+        // Bail out if it's not vararg. Normally, non-vararg parameter should never hit this branch in the first place since there should be
+        // a corresponding `FirResolvedTypeRef` returned for the type reference `KtElement` from `getOrBuildFir`
+        if (!fir.isVararg) return null
+        val elementTypeSymbol = fir
+            .returnTypeRef
+            .coneType
+            .arrayElementType()
+            ?.toSymbol(session)
+            ?.fir
+            ?.buildSymbol(symbolBuilder) ?: return null // return null if resolving the FIR declaration failed for the element type ref
+        return listOf(elementTypeSymbol)
     }
 
     private fun KtSimpleNameExpression.isSyntheticOperatorReference() = when (this) {
