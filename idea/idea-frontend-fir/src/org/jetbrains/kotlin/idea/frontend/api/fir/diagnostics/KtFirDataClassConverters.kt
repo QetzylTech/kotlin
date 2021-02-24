@@ -26,6 +26,7 @@ import org.jetbrains.kotlin.psi.KtIfExpression
 import org.jetbrains.kotlin.psi.KtModifierListOwner
 import org.jetbrains.kotlin.psi.KtNamedDeclaration
 import org.jetbrains.kotlin.psi.KtParameter
+import org.jetbrains.kotlin.psi.KtPrimaryConstructor
 import org.jetbrains.kotlin.psi.KtProperty
 import org.jetbrains.kotlin.psi.KtPropertyAccessor
 import org.jetbrains.kotlin.psi.KtPropertyDelegate
@@ -311,6 +312,24 @@ internal val KT_DIAGNOSTIC_CONVERTER = KtDiagnosticConverterBuilder.buildConvert
     }
     add(FirErrors.SEALED_CLASS_CONSTRUCTOR_CALL) { firDiagnostic ->
         SealedClassConstructorCallImpl(
+            firDiagnostic as FirPsiDiagnostic<*>,
+            token,
+        )
+    }
+    add(FirErrors.DATA_CLASS_WITHOUT_PARAMETERS) { firDiagnostic ->
+        DataClassWithoutParametersImpl(
+            firDiagnostic as FirPsiDiagnostic<*>,
+            token,
+        )
+    }
+    add(FirErrors.DATA_CLASS_VARARG_PARAMETER) { firDiagnostic ->
+        DataClassVarargParameterImpl(
+            firDiagnostic as FirPsiDiagnostic<*>,
+            token,
+        )
+    }
+    add(FirErrors.DATA_CLASS_NOT_PROPERTY_PARAMETER) { firDiagnostic ->
+        DataClassNotPropertyParameterImpl(
             firDiagnostic as FirPsiDiagnostic<*>,
             token,
         )

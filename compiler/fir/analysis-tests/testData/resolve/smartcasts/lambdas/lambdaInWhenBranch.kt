@@ -4,7 +4,7 @@
 private sealed class Sealed
 
 private data class SubClass1(val t: String) : Sealed()
-private data class SubClass2 : Sealed()
+<!DATA_CLASS_WITHOUT_PARAMETERS!>private data class SubClass2 : Sealed()<!>
 
 private fun foo(p: Sealed) {
     when (p) {

@@ -1,4 +1,4 @@
-data class A {}
+<!DATA_CLASS_WITHOUT_PARAMETERS!>data class A {}<!>
 
 <!PRIMARY_CONSTRUCTOR_REQUIRED_FOR_DATA_CLASS!>data class B {
     constructor()

@@ -30,6 +30,7 @@ import org.jetbrains.kotlin.psi.KtIfExpression
 import org.jetbrains.kotlin.psi.KtModifierListOwner
 import org.jetbrains.kotlin.psi.KtNamedDeclaration
 import org.jetbrains.kotlin.psi.KtParameter
+import org.jetbrains.kotlin.psi.KtPrimaryConstructor
 import org.jetbrains.kotlin.psi.KtProperty
 import org.jetbrains.kotlin.psi.KtPropertyAccessor
 import org.jetbrains.kotlin.psi.KtPropertyDelegate
@@ -360,6 +361,27 @@ internal class SealedClassConstructorCallImpl(
     firDiagnostic: FirPsiDiagnostic<*>,
     override val token: ValidityToken,
 ) : KtFirDiagnostic.SealedClassConstructorCall(), KtAbstractFirDiagnostic<PsiElement> {
+    override val firDiagnostic: FirPsiDiagnostic<*> by weakRef(firDiagnostic)
+}
+
+internal class DataClassWithoutParametersImpl(
+    firDiagnostic: FirPsiDiagnostic<*>,
+    override val token: ValidityToken,
+) : KtFirDiagnostic.DataClassWithoutParameters(), KtAbstractFirDiagnostic<KtPrimaryConstructor> {
+    override val firDiagnostic: FirPsiDiagnostic<*> by weakRef(firDiagnostic)
+}
+
+internal class DataClassVarargParameterImpl(
+    firDiagnostic: FirPsiDiagnostic<*>,
+    override val token: ValidityToken,
+) : KtFirDiagnostic.DataClassVarargParameter(), KtAbstractFirDiagnostic<KtParameter> {
+    override val firDiagnostic: FirPsiDiagnostic<*> by weakRef(firDiagnostic)
+}
+
+internal class DataClassNotPropertyParameterImpl(
+    firDiagnostic: FirPsiDiagnostic<*>,
+    override val token: ValidityToken,
+) : KtFirDiagnostic.DataClassNotPropertyParameter(), KtAbstractFirDiagnostic<KtParameter> {
     override val firDiagnostic: FirPsiDiagnostic<*> by weakRef(firDiagnostic)
 }
 

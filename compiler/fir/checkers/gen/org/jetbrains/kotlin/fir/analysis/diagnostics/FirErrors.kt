@@ -34,6 +34,7 @@ import org.jetbrains.kotlin.psi.KtIfExpression
 import org.jetbrains.kotlin.psi.KtModifierListOwner
 import org.jetbrains.kotlin.psi.KtNamedDeclaration
 import org.jetbrains.kotlin.psi.KtParameter
+import org.jetbrains.kotlin.psi.KtPrimaryConstructor
 import org.jetbrains.kotlin.psi.KtProperty
 import org.jetbrains.kotlin.psi.KtPropertyAccessor
 import org.jetbrains.kotlin.psi.KtPropertyDelegate
@@ -104,6 +105,9 @@ object FirErrors {
     val PRIMARY_CONSTRUCTOR_REQUIRED_FOR_DATA_CLASS by warning0<FirSourceElement, PsiElement>()
     val EXPLICIT_DELEGATION_CALL_REQUIRED by warning0<FirSourceElement, PsiElement>(SourceElementPositioningStrategies.SECONDARY_CONSTRUCTOR_DELEGATION_CALL)
     val SEALED_CLASS_CONSTRUCTOR_CALL by error0<FirSourceElement, PsiElement>()
+    val DATA_CLASS_WITHOUT_PARAMETERS by error0<FirSourceElement, KtPrimaryConstructor>()
+    val DATA_CLASS_VARARG_PARAMETER by error0<FirSourceElement, KtParameter>()
+    val DATA_CLASS_NOT_PROPERTY_PARAMETER by error0<FirSourceElement, KtParameter>()
 
     // Annotations
     val ANNOTATION_ARGUMENT_KCLASS_LITERAL_OF_TYPE_PARAMETER_ERROR by error0<FirSourceElement, KtExpression>()

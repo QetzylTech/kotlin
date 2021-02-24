@@ -18,7 +18,9 @@ import org.jetbrains.kotlin.fir.declarations.FirMemberDeclaration
 import org.jetbrains.kotlin.fir.expressions.FirExpression
 import org.jetbrains.kotlin.fir.expressions.WhenMissingCase
 import org.jetbrains.kotlin.fir.symbols.AbstractFirBasedSymbol
-import org.jetbrains.kotlin.fir.symbols.impl.*
+import org.jetbrains.kotlin.fir.symbols.impl.FirClassLikeSymbol
+import org.jetbrains.kotlin.fir.symbols.impl.FirPropertySymbol
+import org.jetbrains.kotlin.fir.symbols.impl.FirTypeParameterSymbol
 import org.jetbrains.kotlin.fir.types.ConeKotlinType
 import org.jetbrains.kotlin.lexer.KtModifierKeywordToken
 import org.jetbrains.kotlin.name.Name
@@ -99,6 +101,11 @@ object DIAGNOSTICS_LIST : DiagnosticList() {
         val PRIMARY_CONSTRUCTOR_REQUIRED_FOR_DATA_CLASS by warning<FirSourceElement, PsiElement>()
         val EXPLICIT_DELEGATION_CALL_REQUIRED by warning<FirSourceElement, PsiElement>(PositioningStrategy.SECONDARY_CONSTRUCTOR_DELEGATION_CALL)
         val SEALED_CLASS_CONSTRUCTOR_CALL by error<FirSourceElement, PsiElement>()
+
+        // TODO: Consider creating a parameter list position strategy and report on the parameter list instead
+        val DATA_CLASS_WITHOUT_PARAMETERS by error<FirSourceElement, KtPrimaryConstructor>()
+        val DATA_CLASS_VARARG_PARAMETER by error<FirSourceElement, KtParameter>()
+        val DATA_CLASS_NOT_PROPERTY_PARAMETER by error<FirSourceElement, KtParameter>()
     }
 
     val ANNOTATIONS by object : DiagnosticGroup("Annotations") {

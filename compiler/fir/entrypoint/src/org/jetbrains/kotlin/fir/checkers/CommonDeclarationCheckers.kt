@@ -53,7 +53,7 @@ object CommonDeclarationCheckers : DeclarationCheckers() {
         FirLocalEntityNotAllowedChecker,
         FirManyCompanionObjectsChecker,
         FirMethodOfAnyImplementedInInterfaceChecker,
-        FirPrimaryConstructorRequiredForDataClassChecker,
+        FirDataClassPrimaryConstructorChecker,
         FirSupertypeInitializedInInterfaceChecker,
         FirSupertypeInitializedWithoutPrimaryConstructor,
         FirTypeParametersInObjectChecker,
